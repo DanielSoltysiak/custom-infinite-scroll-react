@@ -1,41 +1,30 @@
-import { useInView } from "react-intersection-observer";
-
-import { useEffect } from "react";
 import { useArticlesQuery } from "./useArticlesQuery";
 import { ArticleTile } from "./ArticleTile";
+import InfiniteScroll from "../InfiniteScroll";
+import { ArticleData } from "../types";
+import InfoElem from "./ArticlesListStateInfo";
 
 export const ArticlesList = () => {
-  const { ref, inView } = useInView();
-  const { data, status, error, hasNextPage, fetchNextPage, isSuccess } =
+  const { data, hasNextPage, fetchNextPage, error, isFetching } =
     useArticlesQuery();
 
-  useEffect(() => {
-    if (inView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, fetchNextPage, hasNextPage]);
+  const articles = data?.pages.reduce<ArticleData[]>((acc, page) => {
+    return [...acc, ...page.articles];
+  }, []);
 
-  const content =
-    isSuccess &&
-    data.pages.map((page) =>
-      page.articles.map((article, idx) => {
-        if (page.articles.length === idx + 1) {
-          return <ArticleTile article={article} key={idx} ref={ref} />;
-        }
-        return <ArticleTile article={article} key={idx} />;
-      })
-    );
-
-  if (status === "pending") {
-    return <p className="text-xl font-bold sm:text-3xl">Loading...</p>;
-  }
-
-  if (status === "error") {
-    console.log(error);
-    return (
-      <p className="text-xl font-bold sm:text-3xl">Something went wrong</p>
-    );
-  }
-
-  return content;
+  return (
+    <InfiniteScroll
+      hasNextPage={hasNextPage}
+      fetchNextPage={fetchNextPage}
+      isLoading={isFetching}
+      error={error}
+      loadingElement={<InfoElem info={"Loading..."} />}
+      errorElement={<InfoElem info={"Something went wrong"} />}
+      endElement={<InfoElem info={"No more articles"} />}
+    >
+      {articles?.map((article, index) => (
+        <ArticleTile article={article} key={index} />
+      ))}
+    </InfiniteScroll>
+  );
 };
