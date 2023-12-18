@@ -1,30 +1,44 @@
-# React + TypeScript + Vite
+# Infinite Scroll Article List
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+This project is a simple web application that displays a list of articles fetched from the RealWorld API using Vite, React, TypeScript, React Query, and Tailwind CSS. The main feature is the infinite scroll, allowing users to load and explore a continuous stream of articles.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features and Technologies
 
-## Expanding the ESLint configuration
+- **Infinite Scroll:** Articles are loaded dynamically as the user scrolls down, providing a smooth and uninterrupted browsing experience.
+- **RealWorld API Integration:** The application fetches article data from the RealWorld API, providing up-to-date and real-world content.
+- **React:** The user interface is built using React, a popular JavaScript library for building user interfaces.
+- **TypeScript:** The project is created with TypeScript to enhance code readability and maintainability. And catch potential errors during development.
+- **React Query:** Data fetching and state management is handled efficiently with React Query, making it easy to manage and update the application's data.
+- **Tailwind CSS:** The project utilizes Tailwind CSS for styling, enabling rapid and responsive UI development.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Getting Started
 
-- Configure the top-level `parserOptions` property like this:
+Follow these steps to set up and run the project locally:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+1. **Clone the Repository:**
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+   ```bash
+   git clone https://github.com/DanielSoltysiak/custom-infinite-scroll-react.git
+   ```
+
+2. **Navigate to the Project Directory:**
+
+   ```bash
+   cd infinite-scroll-article-list
+   ```
+
+3. **Install Dependencies:**
+
+   ```bash
+   npm install
+   ```
+
+4. **Run the Application::**
+
+   ```bash
+   npm run dev
+   ```
+
+   This command will start the development server, and you can access the application at http://localhost:3000 in your web browser.
