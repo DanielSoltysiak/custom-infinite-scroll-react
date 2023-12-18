@@ -1,4 +1,4 @@
-import { ArticlesList } from "./ArticlesList";
+import { ArticlesList } from "./Articles/ArticlesList";
 
 function App() {
   return (
