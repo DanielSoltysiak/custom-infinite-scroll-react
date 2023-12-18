@@ -1,5 +1,10 @@
-import { Children, ReactElement, cloneElement, useEffect } from "react";
-import { useInView } from "react-intersection-observer";
+import {
+  Children,
+  ReactElement,
+  cloneElement,
+  useCallback,
+  useRef,
+} from "react";
 
 interface Props {
   children?: ReactElement[] | ReactElement;
@@ -22,19 +27,29 @@ const InfiniteScroll = ({
   errorElement,
   endElement,
 }: Props) => {
-  const { ref, inView } = useInView();
+  const observer = useRef<IntersectionObserver | null>(null);
 
-  useEffect(() => {
-    if (inView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, fetchNextPage, hasNextPage]);
+  const lastElem = useCallback(
+    (elem: Element) => {
+      if (!elem) return;
+      if (isLoading) return;
+      if (observer.current) observer.current.disconnect();
 
-  const wrappedChildren =
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          fetchNextPage();
+        }
+      });
+      observer.current.observe(elem);
+    },
+    [isLoading, fetchNextPage]
+  );
+
+  const childrenWithObserver =
     children &&
     Children.map(children, (child, idx) => {
-      if (idx === Children.count(children) - 3) {
-        return cloneElement(child, { ref: ref });
+      if (idx === Children.count(children) - 1) {
+        return cloneElement(child, { ref: lastElem });
       }
       return child;
     });
@@ -46,7 +61,7 @@ const InfiniteScroll = ({
 
   return (
     <>
-      {wrappedChildren}
+      {childrenWithObserver}
       {isLoading && loadingElement}
       {!hasNextPage && children && endElement}
     </>
